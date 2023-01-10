@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ade8ed6f-9da6-4e34-8761-8c3845dcede8": {
+      "ProjectGuid": "ade8ed6f-9da6-4e34-8761-8c3845dcede8",
+      "DisplayName": "TorgiGov",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Прочие файлы",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}
