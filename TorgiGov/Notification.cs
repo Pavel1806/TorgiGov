@@ -27,10 +27,11 @@ namespace TorgiGov
         public async Task ProcessingNotification()
         {
             List<string> notificationsLots = new List<string>();
+            string path = "D:\\земля\\Аукционы\\spisok.txt";
 
             //for(int k = 1; k < 10; k++)
             //{
-                for (int j = 1; j < 30; j++)
+                for (int j = 1; j < 2; j++)
                 {
                     string link = null;
                     if (j < 9)
@@ -65,6 +66,7 @@ namespace TorgiGov
                     var jsonElement = await JsonLinks.ProcessingJsonLinks(linkNotification);
 
                         JsonElement element;
+                        JsonElement commonInfo;
                         var el1 = jsonElement.TryGetProperty("exportObject", out element);
                         if (el1 != true)
                             continue;
@@ -74,51 +76,62 @@ namespace TorgiGov
                         var el3 = element.TryGetProperty("notice", out element);
                         if (el3 != true)
                             continue;
-                        var el4 = element.TryGetProperty("lots", out element);
-                        if (el4 != true)
+                        var el5 = element.TryGetProperty("commonInfo", out commonInfo);
+                        if (el5 != true)
                             continue;
+                        var el4 = element.TryGetProperty("lots", out element);
+                            if (el4 != true)
+                                continue;
+                    
+                        JsonElement commonInfoHref;
 
-                        //var arrayJson = jsonElement.GetProperty("exportObject")
-                        //       .GetProperty("structuredObject").GetProperty("notice").GetProperty("lots");
+                        var el9 = commonInfo.TryGetProperty("href", out commonInfoHref);
+                        if (el9 != true)
+                            continue;
+                        var href = commonInfoHref.GetString();
 
-                        //notificationsLots.Add(jsonElement);
-                        var g = element.GetArrayLength();
+                    //var arrayJson = jsonElement.GetProperty("exportObject")
+                    //       .GetProperty("structuredObject").GetProperty("notice").GetProperty("lots");
+
+                    //notificationsLots.Add(jsonElement);
+                    var g = element.GetArrayLength();
                         for (int i = 0; i < element.GetArrayLength(); i++)
                         {
                             JsonElement addressElement;                                   //element[i].GetProperty("biddingObjectInfo").GetProperty("estateAddress").GetString();
 
-                            var el5 = element[i].TryGetProperty("biddingObjectInfo", out addressElement);
-                            if (el5 != true)
-                                continue;
-                            var el6 = addressElement.TryGetProperty("estateAddress", out addressElement);
+                            var el6 = element[i].TryGetProperty("biddingObjectInfo", out addressElement);
                             if (el6 != true)
+                                continue;
+                            var el7 = addressElement.TryGetProperty("estateAddress", out addressElement);
+                            if (el7 != true)
                                 continue;
                             var address = addressElement.GetString();
 
 
                             JsonElement lotNameElement;
 
-                            var el7 = element[i].TryGetProperty("lotName", out lotNameElement);
-                            if (el7 != true)
+                            var el8 = element[i].TryGetProperty("lotName", out lotNameElement);
+                            if (el8 != true)
                                 continue;
                             var lotName = lotNameElement.GetString();
 
-                            //var lotName = element[i].GetProperty("lotName").GetString();
+                           
 
-                            if (address.IndexOf("дмитровс") > -1 || address.IndexOf("Дмитровс") > -1 || address.IndexOf("сергиево") > -1 || address.IndexOf("Сергиево") > -1 || address.IndexOf("пушкинск") > -1 || address.IndexOf("Пушкинск") > -1)
+                        //var lotName = element[i].GetProperty("lotName").GetString();
+
+                        if (address.IndexOf("дмитровс") > -1 || address.IndexOf("Дмитровс") > -1 || address.IndexOf("сергиево") > -1 || address.IndexOf("Сергиево") > -1 || address.IndexOf("пушкинск") > -1 || address.IndexOf("Пушкинск") > -1)
                                 if (lotName.IndexOf("земельн") > -1 || lotName.IndexOf("Земельн") > -1)
                                 {
-                                    notificationsLots.Add(address);
+                                    notificationsLots.Add(href);
                                 }
                             //notificationsLots.Add(jsonElement);
                         }
                     }
                 }
             //}
-            
-            
-            
-            
+
+
+            await File.AppendAllLinesAsync(path, notificationsLots);
 
             //var t = notificationsLots.Where(x => x.GetProperty("biddingObjectInfo").GetProperty("estateAddress").GetString().IndexOf("Дмитровс") != -1);
 
