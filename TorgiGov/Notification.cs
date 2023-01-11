@@ -20,6 +20,10 @@ namespace TorgiGov
         //public string? PublishDate { get; set; }
         //public string? Href { get; set; }
 
+        //public string? RegNum { get; set; }
+        //public string? PublishDate { get; set; }
+        //public string? Href { get; set; }
+
         public async Task ProcessingNotification()
         {
             List<string> notificationsLots = new List<string>();
