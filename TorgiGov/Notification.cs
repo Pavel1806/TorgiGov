@@ -84,16 +84,25 @@ namespace TorgiGov
                                 continue;
                     
                         JsonElement commonInfoHref;
+                        JsonElement biddFormName;
+                        string? biddFormNameString = null;
 
                         var el9 = commonInfo.TryGetProperty("href", out commonInfoHref);
                         if (el9 != true)
                             continue;
                         var href = commonInfoHref.GetString();
 
-                    //var arrayJson = jsonElement.GetProperty("exportObject")
-                    //       .GetProperty("structuredObject").GetProperty("notice").GetProperty("lots");
+                        var el10 = commonInfo.TryGetProperty("biddForm", out biddFormName);
+                        if (el10 == true)
+                        {
+                            var el11 = biddFormName.TryGetProperty("name", out biddFormName);
+                            if(el11 == true)
+                            {
+                                biddFormNameString = biddFormName.GetString();
+                            }
+                        }
+                           
 
-                    //notificationsLots.Add(jsonElement);
                     var g = element.GetArrayLength();
                         for (int i = 0; i < element.GetArrayLength(); i++)
                         {
@@ -109,20 +118,29 @@ namespace TorgiGov
 
 
                             JsonElement lotNameElement;
+                            JsonElement lotPriceMin;
+                            string? lotPriceMinString = null;
 
                             var el8 = element[i].TryGetProperty("lotName", out lotNameElement);
-                            if (el8 != true)
+                                if (el8 != true)
                                 continue;
                             var lotName = lotNameElement.GetString();
 
-                           
+                            var el12 = element[i].TryGetProperty("priceMin", out lotPriceMin);
+                            if (el12 == true)
+                            {
+                                lotPriceMinString = lotPriceMin.GetString();
+                            }
+                        
+
+
 
                         //var lotName = element[i].GetProperty("lotName").GetString();
 
                         if (address.IndexOf("дмитровс") > -1 || address.IndexOf("Дмитровс") > -1 || address.IndexOf("сергиево") > -1 || address.IndexOf("Сергиево") > -1 || address.IndexOf("пушкинск") > -1 || address.IndexOf("Пушкинск") > -1)
                                 if (lotName.IndexOf("земельн") > -1 || lotName.IndexOf("Земельн") > -1)
                                 {
-                                    notificationsLots.Add(href);
+                                    notificationsLots.Add($"{href};{biddFormNameString};{lotPriceMinString}");
                                 }
                             //notificationsLots.Add(jsonElement);
                         }
